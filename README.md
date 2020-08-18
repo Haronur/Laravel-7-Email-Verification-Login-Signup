@@ -107,3 +107,120 @@ php artisan migrate
 ```
 php artisan serve
 ```
+
+## -- Laravel 7 Email Verification Login Signup --
+
+    Install Laravel Setup
+    Setup Database and SMTP Details
+    Create Auth Scaffolding
+    Migrate Database
+    Add Route
+    Add Middleware In Controller
+    Run Development Server
+
+#### Step 1: Setup SMTP Details inside of .env file
+- Email Setup
+##### @ Gmail Security Turn Off First in the Google account of `haronurr@gmail.com` if You want to make `Email Verification` from your local PC
+```
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=haronurr@gmail.com
+MAIL_PASSWORD=password of haronurr@gmail.com Account
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=haronurr@gmail.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+#### Step 2: Add Route
+- Add Routes inside of routes/web.php
+```
+Route::get('/', function () {
+    return view('welcome');
+});
+  
+Auth::routes(['verify' => true]);
+  
+Route::get('/home', 'HomeController@index')->name('home');
+```
+
+#### Step 3: Adding Middleware
+- Inside of home controller
+- Example: $this->middleware(['auth','verified']);
+```
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class HomeController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth','verified']);
+    }
+  
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return view('home');
+    }
+}
+```
+- Model Step inside of app/User.php
+```
+<?php
+
+namespace App;
+
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+class User extends Authenticatable implements MustVerifyEmail
+{
+    use Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'email', 'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+}
+```
+
+#### Step 4 : Run Server
+```
+php artisan serve
+```
