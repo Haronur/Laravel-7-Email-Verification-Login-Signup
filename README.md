@@ -59,3 +59,51 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Laravel 7 Email Verification Tutorial Example
+
+I am going to share with you How to send email verification example in laravel 7, I would like to share with you how to verify email after user registration in the laravel app. I will use laravel new feature MustEmailVerify Contracts and after the user successfully verifies email that time we will authenticate and redirect to the user dashboard. We will show you each thing step by step.
+
+If the user registers with us but does not verification of email in laravel project. User can not access the dashboard in laravel based project. The user can show the message “Before proceeding, please check your email for the verification link. If you have not received the email, then click to request another.”
+
+In laravel old version we are doing email verification process manually, but in laravel 7 they provide in build email verification setup for newly registered users to must have to verify his email before proceeding. You just need to make some basic setup with the need to use middleware, routes and mail configuration.
+
+## -- Laravel Default Authentication --
+
+#### Step 1: Create Auth Scaffolding 
+- You have to follow few steps to make auth in your laravel 7 application.
+First, you need to install the laravel/UI package as like bellow:
+
+```
+composer require laravel/ui
+php artisan ui bootstrap --auth
+npm install && npm run dev
+```
+
+#### Step 3: Create Database at phpMyAdmin named “laravel_email_verification” and setup .env file in your root directory 
+
+- Database
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_email_verification
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+#### Step 4: Customize at AppServiceProvider.php 
+```
+Customize at AppServiceProvider.php in project\app\Providers
+```
+
+#### Step 5: Migrate Database
+- Now you need to run default migration of laravel by the following command:
+```
+php artisan migrate
+```
+
+#### Step 6: Run Server
+```
+php artisan serve
+```
